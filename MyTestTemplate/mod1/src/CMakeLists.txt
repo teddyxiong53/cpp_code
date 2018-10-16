@@ -1,4 +1,4 @@
 cmake_minimum_required(VERSION 2.8)
 
 include_directories("../include")
-add_library(mod1 STATIC f1.cpp)
+add_library(mod1 STATIC f1.cpp TaskQueue.cpp TaskThread.cpp Executor.cpp)
