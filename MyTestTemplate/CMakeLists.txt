@@ -1,11 +1,59 @@
 cmake_minimum_required(VERSION 2.8)
-add_definitions("-Wall -std=c++11 -DDEBUG=1")
+project(xhl_test C CXX)
+enable_testing()
+
+
+set(CXX_FLAGS
+ -g
+ # -DVALGRIND
+ -DCHECK_PTHREAD_RETURN_VALUE
+ -D_FILE_OFFSET_BITS=64
+ -Wall
+ -Wextra
+# -Werror
+ -Wconversion
+ -Wno-unused-parameter
+ -Wold-style-cast
+ -Woverloaded-virtual
+ -Wpointer-arith
+ -Wshadow
+ -Wwrite-strings
+ -march=native
+ # -MMD
+ -std=c++11
+ -rdynamic
+)
+string(REPLACE ";" " " CMAKE_CXX_FLAGS "${CXX_FLAGS}")
+set(CMAKE_CXX_FLAGS_DEBUG "-O0")
+set(CMAKE_CXX_FLAGS_RELEASE "-O2 -DNDEBUG")
+
+set(TOP_DIR  )
 add_subdirectory(mod1)
 add_subdirectory(mod2)
 include_directories("./mod1/include")
 include_directories("./mod2/include")
+
 include_directories("./include")
-add_executable(test 
+
+link_directories(${PROJECT_SOURCE_DIR}/lib)
+
+
+#message(${PROJECT_SOURCE_DIR})
+
+add_executable(test
 			main.cpp
 			)
-target_link_libraries(test mod1 mod2 pthread)
+target_link_libraries(test
+	-Wl,--start-group
+	mod1
+	mod2
+	pthread
+	muduo_base
+	muduo_cdns
+	muduo_curl
+	muduo_http
+	muduo_inspect
+	muduo_net
+	 -Wl,--end-group
+	)
+
