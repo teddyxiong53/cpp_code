@@ -27,11 +27,14 @@ string(REPLACE ";" " " CMAKE_CXX_FLAGS "${CXX_FLAGS}")
 set(CMAKE_CXX_FLAGS_DEBUG "-O0")
 set(CMAKE_CXX_FLAGS_RELEASE "-O2 -DNDEBUG")
 
-set(TOP_DIR  )
+
 add_subdirectory(mod1)
 add_subdirectory(mod2)
+add_subdirectory(curl)
+
 include_directories("./mod1/include")
 include_directories("./mod2/include")
+include_directories("./curl/include")
 
 include_directories("./include")
 
@@ -54,6 +57,8 @@ target_link_libraries(test
 	muduo_http
 	muduo_inspect
 	muduo_net
+	muduo_curl
+	curl
 	 -Wl,--end-group
 	)
 
